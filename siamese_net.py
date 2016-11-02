@@ -51,6 +51,7 @@ from sklearn.linear_model import LogisticRegression
 from datasets import Datasets
 from normalization import LCN, ZCA
 
+import code
 # plt.style.use('ggplot')
 theano.config.floatX = 'float32'
 
@@ -678,6 +679,7 @@ class SiameseNetPredictor(object):
         """Summary"""
         # Load the pretrained model
         self.result = pickle.load(open(filename, 'rb'))
+        #code.interact(local=dict(globals(),**locals()))
         print(self.result['params'])
         self.grayscale = self.result['params']['b_convert_to_grayscale']
         self.normalization = self.result['params']['normalization']
@@ -780,6 +782,7 @@ class SiameseNetPredictor(object):
                 self.net.x, deterministic=True)
             fn = theano.function([self.net.x], [layer_output])
             self.fns[layer_num] = fn
+        #code.interact(local=dict(globals(),**locals()))
         out = fn(lasagne.utils.floatX(X))
         return out
 
@@ -2340,19 +2343,19 @@ def main(argv):
     # parser.add_argument('-h', '--help', help='Display help.', action=printUsage())
     parser.add_argument('-m', '--model_type',
                         help='Choose the Deep Network to use. ["hani"], "chopra", or "custom"',
-                        default='hani', dest='model_type')
+                        default='custom', dest='model_type')
     parser.add_argument('-of', '--output_features',
                         help='Number of features in the final siamese network layer',
                         default=40, dest='n_out')
     parser.add_argument('-bs', '--batch_size',
                         help='Number of observations per batch.',
-                        default=100, dest='batch_size')
+                        default=200, dest='batch_size')
     parser.add_argument('-e', '--epochs',
                         help='Number of epochs to train for.',
-                        default=5, dest='n_epochs')
+                        default=20, dest='n_epochs')
     parser.add_argument('-lr', '--learning_rate',
                         help='Initial learning rate to apply to the gradient update.',
-                        default=1e-4, dest='learning_rate')
+                        default=1e-3, dest='learning_rate')
     parser.add_argument('-norm', '--normalization',
                         help='Normalization of the dataset using either ["-1:1"], "LCN", "LCN-", or "ZCA".',
                         default='-1:1', dest='normalization')
@@ -2379,19 +2382,19 @@ def main(argv):
                         default='l2', dest='distance_fn')
     parser.add_argument('-cf', '--cropfactor',
                         help='Scale factor of amount of image around the face to use.',
-                        default=1.0, dest='crop_factor')
+                        default=0.5, dest='crop_factor')
     parser.add_argument('-sp', '--spatial_transform',
                         help='Whether or not to prepend a spatial transform network',
                         default=False, dest='spatial')
     parser.add_argument('-r', '--resolution',
                         help='Rescale images to this fixed square pixel resolution (e.g. 64 will mean images, after any crops, are rescaled to 64 x 64). ',
-                        default=64, dest='resolution')
+                        default=50, dest='resolution')
     parser.add_argument('-nf', '--num_files',
                         help='Number of files to load for each person.',
                         default=2, dest='num_files')
     parser.add_argument('-gray', '--grayscale',
                         help='Convert images to grayscale.',
-                        default=True, dest='b_convert_to_grayscale')
+                        default=False, dest='b_convert_to_grayscale')
 
     args = parser.parse_args()
     print(args)

@@ -336,7 +336,7 @@ class Datasets(object):
             print('Extracting dataset...')
             os.system('tar -xvf lfw.tgz')
             return self._get_one_level_deep(
-                path_to_data='./lfw', token1='', token2='.jpg'
+                path_to_data=+'./lfw', token1='', token2='.jpg'
             )
 
     def _get_kad_dataset(self, path_to_data=None):
@@ -476,8 +476,7 @@ class Datasets(object):
         # Randomize directories
         indices = np.random.permutation(len(dirs))
         for label_i, direc in enumerate([dirs[dir_i] for dir_i in indices]):
-            print('Person: {current}/{total}'.format(
-                current=label_i, total=len(dirs)), end='\r')
+            print('Person: {current}/{total}'.format(current=label_i, total=len(dirs)))#, end='\r')
             files = os.listdir(os.path.join(path_to_data, direc))
             good_files = [
                 file_i for file_i in files
@@ -522,8 +521,8 @@ class Datasets(object):
             print(
                 'Person: {current}/{total}'.format(
                     current=label_i, total=len(dirs)
-                ),
-                end='\r'
+                )
+                #end='\r'
             )
             sub_direcs = [
                 subdirec
