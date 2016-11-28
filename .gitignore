@@ -2,3 +2,6 @@
 *lfw*
 lfw
 __*
+*.pyc
+testmodel.pkl
+.ipynb_checkpoints/
